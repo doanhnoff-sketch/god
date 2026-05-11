@@ -1,0 +1,35 @@
+-- Master Auto-Execute Script
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+local scripts = {
+    "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source",
+    "https://raw.githubusercontent.com/doanhnoff-sketch/Mimmim/refs/heads/main/Helo",
+    "https://raw.githubusercontent.com/doanhnoff-sketch/loop/refs/heads/main/idk",
+    "https://raw.githubusercontent.com/doanhnoff-sketch/severhop/main/idk",
+    "https://raw.githubusercontent.com/doanhnoff-sketch/macro.lua/refs/heads/main/tudongxoay",
+    -- Link script nhảy mới của bạn ở đây
+    "https://raw.githubusercontent.com/doanhnoff-sketch/jump/refs/heads/main/autojump"
+}
+
+for i, url in ipairs(scripts) do
+    task.spawn(function()
+        local success, result = pcall(function()
+            return game:HttpGet(url)
+        end)
+
+        if success and result then
+            local func, err = loadstring(result)
+            if func then
+                task.spawn(func)
+                print("Successfully executed script " .. i)
+            else
+                warn("Lỗi cú pháp trong script " .. i .. ": " .. tostring(err))
+            end
+        else
+            warn("Không thể tải script từ URL số " .. i)
+        end
+    end)
+    task.wait(1.5) -- Nghỉ một chút giữa các lần load để tránh lag
+end
